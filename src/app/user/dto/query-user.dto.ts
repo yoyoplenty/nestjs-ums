@@ -18,6 +18,9 @@ export class QueryUserDto extends PaginationDto implements IQueryUser {
   @ApiPropertyOptional({ example: 'mee' })
   middleName?: string;
 
+  @ApiPropertyOptional({ example: 'doe' })
+  search?: string;
+
   @ApiPropertyOptional({ example: 'admin@gmail.com' })
   email?: string;
 

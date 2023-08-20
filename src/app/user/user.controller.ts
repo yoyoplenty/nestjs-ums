@@ -5,8 +5,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { ResponseDTO } from './../../utils/dto/response.dto';
-import { ErrorResponse, JsonResponse } from './../../handlers/responses/response';
 import { CreateUserPipe } from './validation/create-user.validation';
+import { ErrorResponse, JsonResponse } from './../../handlers/responses/response';
 
 @Controller('api/v1/users')
 export class UserController {
@@ -26,7 +26,7 @@ export class UserController {
   @Get()
   async findAll(@Query() query: QueryUserDto, @Res() res: Response): Promise<ResponseDTO> {
     try {
-      const response = await this.userService.find(query);
+      const response = await this.userService.findAllAndSearch(query);
 
       return JsonResponse(res, response);
     } catch (error) {
@@ -61,7 +61,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string, @Res() res: Response): Promise<ResponseDTO> {
+  async delete(@Param('id') id: string, @Res() res: Response): Promise<ResponseDTO> {
     try {
       const response = await this.userService.delete(id);
 

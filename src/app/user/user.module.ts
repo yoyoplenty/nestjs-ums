@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './user.service';
@@ -15,7 +16,8 @@ import { User, UserSchema } from './schemas/user.schema';
 
           UserSchema.pre('save', function () {
             console.log('Hello from pre save');
-            //TODO, Hash password anc create token
+            console.log(this.password);
+            //TODO, Hash password and create verification token
             // if (!this.isModified("password")) return next();
             // const salt = await bcrypt.genSalt(10);
             // this.password = await bcrypt.hash(this.password, salt);
