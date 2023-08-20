@@ -2,12 +2,13 @@ import { ObjectId } from 'mongodb';
 import { IQueryFilter, IQueryPaginate } from './filter.interface';
 
 export interface IBaseRepository<T> {
-  // find(query?: Record<string, unknown>): Promise<T[]>;
-  find(query?: IQueryFilter<T>): Promise<T[]>;
-
-  paginate(query: IQueryPaginate<T>): Promise<T[]>;
-
   create(payload: Partial<T>): Promise<T>;
+
+  find(query?: IQueryFilter<T> | unknown): Promise<T[]>;
+
+  paginate(query: IQueryPaginate<T> | unknown): Promise<T[]>;
+
+  aggregate(query: Array<any> | unknown): Promise<T[]>;
 
   findById(id: ObjectId): Promise<T>;
 

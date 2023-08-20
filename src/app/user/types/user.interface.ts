@@ -1,4 +1,5 @@
 import { ROLE } from './../../../enums/role.enum';
+import { IBaseSchema } from './../../../utils/types/schema.interface';
 
 export interface IUser {
   firstName: string;
@@ -9,4 +10,4 @@ export interface IUser {
   role: ROLE;
 }
 
-export type IQueryUser = Partial<IUser>;
+export type IQueryUser = Partial<IUser> & Partial<IBaseSchema>;
