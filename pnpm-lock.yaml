@@ -38,6 +38,9 @@ dependencies:
   mongoose:
     specifier: ^7.4.3
     version: 7.4.3
+  mongoose-autopopulate:
+    specifier: ^1.0.1
+    version: 1.0.1(mongoose@7.4.3)
   reflect-metadata:
     specifier: ^0.1.13
     version: 0.1.13
@@ -3906,6 +3909,14 @@ packages:
       socks: 2.7.1
     optionalDependencies:
       saslprep: 1.0.3
+    dev: false
+
+  /mongoose-autopopulate@1.0.1(mongoose@7.4.3):
+    resolution: {integrity: sha512-39rN0QQinA1iz/8JNVKM3MNq/zZrjStiWi8jA15diUC2nnJsvEgRXEir4L4D1azYxY+gBTuqEzLqd7Y+MC6pHQ==}
+    peerDependencies:
+      mongoose: 6.x || 7.x
+    dependencies:
+      mongoose: 7.4.3
     dev: false
 
   /mongoose@7.4.3:

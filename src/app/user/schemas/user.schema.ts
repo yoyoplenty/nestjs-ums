@@ -13,7 +13,7 @@ export class User implements IUser {
   @Prop({ type: String, required: true })
   lastName: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   middleName: string;
 
   @Prop({ type: String, required: true })

@@ -11,14 +11,14 @@ export class BaseService<R, Q, C, U> {
   }
 
   async create(payload: C): Promise<{ data: any; message: string }> {
-    const data = this.repository.create(payload);
+    const data = await this.repository.create(payload);
 
     return { data, message: `${this.name} successfully created` };
   }
 
   async find(query?: Q): Promise<{ data: any; message: string }> {
     const data = await this.repository.find(query);
-    if (!data || data.length < 1) throw new NotFoundException(`${this.name} not found`);
+    if (!data || data.length < 1) throw new NotFoundException(`${this.name}s not found`);
 
     return { data, message: `${this.name} successfully fetched` };
   }

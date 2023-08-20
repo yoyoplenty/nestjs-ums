@@ -44,7 +44,7 @@ export class BaseRepository<T> implements IBaseRepository<T> {
   }
 
   async updateById(id: ObjectId, payload: Partial<T>): Promise<T> {
-    return await this.repository.findByIdAndUpdate(id, payload);
+    return await this.repository.findByIdAndUpdate(id, payload, { new: true });
   }
 
   async deleteOne(query?: Record<string, unknown>): Promise<unknown> {

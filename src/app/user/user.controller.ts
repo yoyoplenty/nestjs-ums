@@ -6,13 +6,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { ResponseDTO } from './../../utils/dto/response.dto';
 import { ErrorResponse, JsonResponse } from './../../handlers/responses/response';
+import { CreateUserPipe } from './validation/create-user.validation';
 
 @Controller('api/v1/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response): Promise<ResponseDTO> {
+  async create(@Body(CreateUserPipe) createUserDto: CreateUserDto, @Res() res: Response): Promise<ResponseDTO> {
     try {
       const response = await this.userService.create(createUserDto);
 
