@@ -1,0 +1,24 @@
+service: nestjs-ums
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  welcome:
+    handler: dist/lambdas/welcome.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+package:
+  individually: true
+  excludeDevDependencies: false
+  exclude:
+    - 'node_modules/**'
+
+plugins:
+  - serverless-plugin-include-dependencies
