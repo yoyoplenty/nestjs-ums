@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  mongodb:
+    container_name: mongo
+    image: bitnami/mongodb:latest
+    env_file: ./.env
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
+
+  app:
+    container_name: nestjs-ums
+    build: .
+    env_file: ./.env
+    volumes:
+      - ./data:/data/db
+    ports:
+      - $PORT:$PORT
+    environment:
+      - MONGO_URI=$DOCKER_MONGO_URI
+
