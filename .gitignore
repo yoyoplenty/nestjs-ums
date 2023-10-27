@@ -1,7 +1,11 @@
 # compiled output
 /dist
 /node_modules
-.env/*
+
+#Environment Variables
+Dockerfile
+.env
+.txt
 
 # Logs
 logs
