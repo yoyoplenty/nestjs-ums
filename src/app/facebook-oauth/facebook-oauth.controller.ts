@@ -22,7 +22,7 @@ export class FacebookOauthController {
   @Get('callback')
   async oauthCallback(@Req() req: Request, @Res() res: Response): Promise<ResponseDTO> {
     try {
-      const response = await this.facebookOauthService.getRedirect(req.query.code);
+      const response = await this.facebookOauthService.getAccessToken(req.query.code);
 
       return JsonResponse(res, response);
     } catch (error) {

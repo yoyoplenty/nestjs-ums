@@ -5,5 +5,6 @@ import { FacebookOauthController } from './facebook-oauth.controller';
 @Module({
   controllers: [FacebookOauthController],
   providers: [FacebookOauthService],
+  exports: [FacebookOauthService],
 })
 export class FacebookOauthModule {}

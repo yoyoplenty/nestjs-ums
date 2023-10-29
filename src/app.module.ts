@@ -8,6 +8,7 @@ import { HttpExceptionFilter } from './handlers/exceptions/http-exception.filter
 import UserModule from './app/user/user.module';
 // import { AuthModule } from './auth/auth.module';
 import { FacebookOauthModule } from './app/facebook-oauth/facebook-oauth.module';
+import { CampaignModule } from './app/campaign/campaign.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { FacebookOauthModule } from './app/facebook-oauth/facebook-oauth.module'
     MongooseModule.forRoot(process.env.MONGO_URI),
     UserModule,
     FacebookOauthModule,
+    CampaignModule,
   ],
   controllers: [AppController],
   providers: [
