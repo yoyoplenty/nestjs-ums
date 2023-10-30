@@ -17,15 +17,7 @@ export class CampaignService {
     if (showDebugingInfo) api.setDebug(true);
 
     const accountId = await this.facebookService.getIdFromToken(accessToken);
-
-    const params = {
-      name: 'My campaign',
-      objective: 'OUTCOME_TRAFFIC',
-      status: 'PAUSED',
-      special_ad_categories: [],
-    };
-
-    const data = await new AdAccount(accountId).createCampaign([], params);
+    const data = await new AdAccount(accountId).createCampaign([], createCampaignDto);
 
     return { data, message: `campaign created successfully` };
   }
