@@ -1,9 +1,9 @@
+import { Request } from 'express';
 import { Controller, Post, Body, Res, Req, BadRequestException } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { ResponseDTO } from './../../utils/dto/response.dto';
 import { ErrorResponse, JsonResponse } from './../../handlers/responses/response';
-import { Request } from 'express';
 
 @Controller('api/v1/campaign')
 export class CampaignController {
