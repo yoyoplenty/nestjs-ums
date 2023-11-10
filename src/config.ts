@@ -9,4 +9,10 @@ export const config = {
     appSecret: process.env.FB_APP_SECRET,
     redirectUrl: process.env.FB_REDIRECT_URL,
   },
+  google: {
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    redirectUrl: process.env.GOOGLE_REDIRECTION_URL,
+  },
 };
