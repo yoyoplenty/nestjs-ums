@@ -6,6 +6,7 @@
 Dockerfile
 .env
 .txt
+.json
 
 # Logs
 logs

@@ -9,4 +9,9 @@ export const config = {
     appSecret: process.env.FB_APP_SECRET,
     redirectUrl: process.env.FB_REDIRECT_URL,
   },
+  twitch: {
+    clientId: process.env.TWITCH_CLIENT_ID,
+    clientSecret: process.env.TWITCH_CLIENT_SECRET,
+    redirectUrl: process.env.TWITCH_REDIRECT_URL,
+  },
 };
