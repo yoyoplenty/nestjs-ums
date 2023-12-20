@@ -21,19 +21,21 @@ export class FacebookOauthService {
   async getAccessToken(code: string | any) {
     if (!code) throw new BadRequestException('Auth code not specified');
 
-    const url = 'https://id.twitch.tv/oauth2/token';
+    // const url = 'https://id.twitch.tv/oauth2/token';
 
-    const payload = {
-      client_id: clientId,
-      client_secret: clientSecret,
-      code,
-      grant_type: 'authorization_code',
-      redirect_uri: redirectUri,
-    };
+    // const payload = {
+    //   client_id: clientId,
+    //   client_secret: clientSecret,
+    //   code,
+    //   grant_type: 'authorization_code',
+    //   redirect_uri: redirectUri,
+    // };
 
-    const response = await axios.post(url, payload);
+    // const response = await axios.post(url, payload);
 
-    return { data: response.data, message: `user authenticated successfully` };
+    //Get Both Access and Refresh Token, Save Refresh Token in the database, under user
+
+    return { data: code, message: `user authenticated successfully` };
   }
 
   async getUserDetails(token: string): Promise<any> {
@@ -58,8 +60,6 @@ export class FacebookOauthService {
     try {
       const response = await axios.get(twitchApiUrl, { headers });
 
-      console.log(response);
-
       return { data: response.data, message: `user authenticated successfully` };
     } catch (err) {
       console.log(err);
@@ -67,6 +67,8 @@ export class FacebookOauthService {
   }
 
   async createBroadcasts(token: string): Promise<any> {
+    //TODO Get token from refresh token under the user account;
+
     const twitchApiUrl = 'https://api.twitch.tv/helix/schedule/segment?broadcaster_id=988354550';
     const headers = {
       Authorization: `Bearer ${token}`,

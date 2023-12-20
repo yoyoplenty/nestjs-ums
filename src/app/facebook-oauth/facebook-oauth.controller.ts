@@ -33,7 +33,7 @@ export class FacebookOauthController {
   @Get('users')
   async getUsers(@Req() req: Request, @Res() res: Response): Promise<ResponseDTO> {
     try {
-      const token = 'y29bmts5qbqce77kyumxt59lhvquov';
+      const token = 'e82vwnr2z4gwkheo9c6tkkfrkwu0px';
 
       const response = await this.facebookOauthService.getUserDetails(token);
 
@@ -46,7 +46,7 @@ export class FacebookOauthController {
   @Get('users/broadcasts')
   async getUsersB(@Req() req: Request, @Res() res: Response): Promise<ResponseDTO> {
     try {
-      const token = '7ne77ctbrg8lgi2wrfnjuxtzzrxiac';
+      const token = 'e82vwnr2z4gwkheo9c6tkkfrkwu0px';
 
       const response = await this.facebookOauthService.getUserBroadcasts(token);
 
