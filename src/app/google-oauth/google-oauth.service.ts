@@ -2,6 +2,11 @@ import axios from 'axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { oAuth2Client, scope } from '../../utils';
 
+import Stripe from 'stripe';
+import { config } from 'src/config';
+
+const stripe = new Stripe(config.stripe.secretKey);
+
 @Injectable()
 export class GoogleOauthService {
   private oAuth2Client = oAuth2Client;
@@ -14,17 +19,20 @@ export class GoogleOauthService {
   }
 
   async getAccessToken(code: string | any): Promise<any> {
+    console.log(code);
     if (!code) throw new BadRequestException('Auth code not specified');
 
     const { tokens } = await this.oAuth2Client.getToken(code);
-    this.oAuth2Client.setCredentials(tokens);
 
     const googleToken = {
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token,
     };
 
-    return { data: googleToken, message: `user authenticated successfully` };
+    console.log(googleToken);
+
+    // return { data: googleToken, message: `user authenticated successfully` };
+    return { data: code, message: `code generated successfully` };
   }
 
   async getIdFromToken(accessToken: string): Promise<string> {
@@ -38,5 +46,11 @@ export class GoogleOauthService {
     const adAccountIds = adAccounts.map((account) => account.id);
 
     return adAccountIds[0];
+  }
+
+  async getSessionDetails(sessionId: string): Promise<any> {
+    const data = await stripe.checkout.sessions.retrieve(sessionId);
+
+    return { data, message: `Session generated successfully` };
   }
 }

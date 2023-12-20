@@ -9,6 +9,10 @@ export const config = {
     appSecret: process.env.FB_APP_SECRET,
     redirectUrl: process.env.FB_REDIRECT_URL,
   },
+  stripe: {
+    privateKey: process.env.STRIPE_PRIVATE_KEY,
+    secretKey: process.env.STRIPE_SECRET_KEY,
+  },
   google: {
     scopes: ['https://www.googleapis.com/auth/calendar'],
     clientId: process.env.GOOGLE_CLIENT_ID,

@@ -29,4 +29,15 @@ export class GoogleOauthController {
       return ErrorResponse(res, error);
     }
   }
+
+  @Get('success')
+  async stripeCallback(@Req() req: Request | any, @Res() res: Response): Promise<ResponseDTO> {
+    try {
+      const response = await this.googleOauthService.getSessionDetails(req.query.session_id);
+
+      return JsonResponse(res, response);
+    } catch (error) {
+      return ErrorResponse(res, error);
+    }
+  }
 }
