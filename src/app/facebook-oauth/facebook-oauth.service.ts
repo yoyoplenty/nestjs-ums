@@ -8,10 +8,6 @@ const redirectUri = config.facebook.redirectUrl;
 
 @Injectable()
 export class FacebookOauthService {
-  // async getFbAuth() {
-  //   return `https://www.facebook.com/v18.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=email`;
-  // }
-
   async getFbAuth() {
     console.log('i got here');
 
