@@ -8,8 +8,31 @@ const redirectUri = config.facebook.redirectUrl;
 
 @Injectable()
 export class FacebookOauthService {
+  // async getFbAuth() {
+  //   return `https://www.facebook.com/v18.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=email`;
+  // }
+
   async getFbAuth() {
-    return `https://www.facebook.com/v18.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=email`;
+    const scope = [
+      'catalog_management',
+      'pages_show_list',
+      'read_page_mailboxes',
+      'ads_management',
+      'business_management',
+      'pages_messaging',
+      'instagram_basic',
+      'instagram_manage_insights',
+      'instagram_content_publish',
+      'instagram_manage_messages',
+      'pages_read_engagement',
+      'pages_manage_metadata',
+      'pages_read_user_content',
+      'pages_manage_posts',
+      'public_profile',
+      'instagram_manage_comments',
+    ].join(',');
+
+    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}`;
   }
 
   async getAccessToken(code: string | any) {
