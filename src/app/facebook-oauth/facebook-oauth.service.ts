@@ -13,6 +13,8 @@ export class FacebookOauthService {
   // }
 
   async getFbAuth() {
+    console.log('i got here');
+
     const scope = [
       'catalog_management',
       'pages_show_list',
