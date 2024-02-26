@@ -34,7 +34,6 @@
     "class-validator": "^0.14.0",
     "dotenv": "^16.3.1",
     "facebook-nodejs-business-sdk": "^18.0.2",
-    "googleapis": "^128.0.0",
     "lodash": "^4.17.21",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.3",

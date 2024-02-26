@@ -9,8 +9,8 @@ import UserModule from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
 import { FacebookOauthModule } from './app/facebook-oauth/facebook-oauth.module';
 import { CampaignModule } from './app/campaign/campaign.module';
-import { GoogleOauthModule } from './app/google-oauth/google-oauth.module';
-import { CalenderModule } from './app/calender/calender.module';
+// import { GoogleOauthModule } from './app/google-oauth/google-oauth.module';
+// import { CalenderModule } from './app/calender/calender.module';
 
 @Module({
   imports: [
@@ -20,8 +20,8 @@ import { CalenderModule } from './app/calender/calender.module';
     AuthModule,
     FacebookOauthModule,
     CampaignModule,
-    GoogleOauthModule,
-    CalenderModule,
+    // GoogleOauthModule,
+    // CalenderModule,
   ],
   controllers: [AppController],
   providers: [
