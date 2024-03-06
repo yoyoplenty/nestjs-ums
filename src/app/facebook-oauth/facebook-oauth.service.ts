@@ -9,37 +9,48 @@ const redirectUri = config.facebook.redirectUrl;
 @Injectable()
 export class FacebookOauthService {
   async getFbAuth() {
-    console.log('i got here');
+    try {
+      const scope = [
+        'email',
+        'publish_video',
+        'catalog_management',
+        'pages_show_list',
+        'read_page_mailboxes',
+        'ads_management',
+        'business_management',
+        'pages_messaging',
+        'instagram_basic',
+        'instagram_manage_insights',
+        'instagram_content_publish',
+        'instagram_manage_messages',
+        'pages_read_engagement',
+        'pages_manage_metadata',
+        'pages_read_user_content',
+        'pages_manage_posts',
+        'public_profile',
+        'instagram_manage_comments',
+        'pages_manage_engagement',
+        'instagram_shopping_tag_products',
+        'instagram_branded_content_brand',
+        'instagram_branded_content_creator',
+        'instagram_manage_events',
+        'attribution_read',
+      ].join(',');
 
-    const scope = [
-      'catalog_management',
-      'pages_show_list',
-      'read_page_mailboxes',
-      'ads_management',
-      'business_management',
-      'pages_messaging',
-      'instagram_basic',
-      'instagram_manage_insights',
-      'instagram_content_publish',
-      'instagram_manage_messages',
-      'pages_read_engagement',
-      'pages_manage_metadata',
-      'pages_read_user_content',
-      'pages_manage_posts',
-      'public_profile',
-      'instagram_manage_comments',
-    ].join(',');
-
-    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}`;
+      return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getAccessToken(code: string | any) {
     if (!code) throw new BadRequestException('Auth code not specified');
 
-    const tokenUrl = `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${appId}&redirect_uri=${redirectUri}&client_secret=${appSecret}&code=${code}`;
-    const response = await axios.get(tokenUrl);
+    // const tokenUrl = `https://graph.facebook.com/v18.0/oauth/access_token?client_id=${appId}&redirect_uri=${redirectUri}&client_secret=${appSecret}&code=${code}`;
+    // const response = await axios.get(tokenUrl);
 
-    return { data: response.data, message: `user authenticated successfully` };
+    return { data: code, message: `user authenticated successfully` };
+    // return { data: response.data, message: `user authenticated successfully` };
   }
 
   async getIdFromToken(accessToken: string): Promise<string> {
