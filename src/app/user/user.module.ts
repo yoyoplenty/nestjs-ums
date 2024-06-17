@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { User, UserSchema } from './schemas/user.schema';
+import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { User, UserSchema } from './schemas/user.schema';
         },
       },
     ]),
+    NestjsFormDataModule,
   ],
   controllers: [UserController],
   providers: [UserRepository, UserService],

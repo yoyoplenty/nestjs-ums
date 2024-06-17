@@ -16,7 +16,6 @@ export class BaseRepository<T> implements IBaseRepository<T> {
 
   async find(query?: IQueryFilter<T> | any): Promise<T[]> {
     const { offset, limit, order, ...filter } = query;
-    console.log(offset, limit, order);
 
     return await this.repository.find(filter);
   }

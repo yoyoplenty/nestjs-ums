@@ -6,6 +6,10 @@ const appId = config.facebook.appId;
 const appSecret = config.facebook.appSecret;
 const redirectUri = config.facebook.redirectUrl;
 
+const zoomClientId = config.zoom.clientId;
+const zoomClientSecret = config.zoom.clientSecret;
+const zoomRedirectUrl = config.zoom.redirectUrl;
+
 @Injectable()
 export class FacebookOauthService {
   async getFbAuth() {
@@ -28,18 +32,50 @@ export class FacebookOauthService {
         'pages_read_user_content',
         'pages_manage_posts',
         'public_profile',
-        'instagram_manage_comments',
         'pages_manage_engagement',
+        'instagram_manage_comments',
         'instagram_shopping_tag_products',
         'instagram_branded_content_brand',
         'instagram_branded_content_creator',
         'instagram_manage_events',
-        'attribution_read',
       ].join(',');
+
+      console.log(appId);
+      console.log(redirectUri);
 
       return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}`;
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async getZoomAuth() {
+    try {
+      return `https://zoom.us/oauth/authorize?response_type=code&client_id=${zoomClientId}&redirect_uri=${zoomRedirectUrl}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  public async getZoomTokens(code): Promise<any> {
+    try {
+      const { data } = await axios.post('https://zoom.us/oauth/token', null, {
+        params: {
+          code,
+          grant_type: 'authorization_code',
+          redirect_uri: zoomRedirectUrl,
+        },
+        headers: {
+          Authorization: `Basic ${Buffer.from(zoomClientId + ':' + zoomClientSecret).toString('base64')}`,
+        },
+      });
+
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Error getting Zoom token: ' + error.message);
     }
   }
 
