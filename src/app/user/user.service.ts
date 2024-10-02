@@ -33,7 +33,7 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
     const data = vendors.map((vendor) => {
       return {
         firstName: vendor.firstName,
-        lastName: vendor.firstName,
+        lastName: vendor.lastName,
         email: vendor.email,
       };
     });

@@ -9,8 +9,9 @@ import UserModule from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
 import { FacebookOauthModule } from './app/facebook-oauth/facebook-oauth.module';
 import { CampaignModule } from './app/campaign/campaign.module';
-// import { GoogleOauthModule } from './app/google-oauth/google-oauth.module';
-// import { CalenderModule } from './app/calender/calender.module';
+import StoreModule from './app/stores/store.module';
+import OrderModule from './app/orders/order.module';
+import TransactionModule from './app/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { CampaignModule } from './app/campaign/campaign.module';
     AuthModule,
     FacebookOauthModule,
     CampaignModule,
-    // GoogleOauthModule,
-    // CalenderModule,
+    StoreModule,
+    OrderModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [
