@@ -6,6 +6,7 @@ import { ProductRepository } from './repository/product.repository';
 import { Product, ProductSchema } from './schemas/product.schema';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { ProductImage, ProductImageSchema } from './schemas/product-image.schema';
+import { ProductImageRepository } from './repository/product-image.repository';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ProductImage, ProductImageSchema } from './schemas/product-image.schema
     NestjsFormDataModule,
   ],
   controllers: [ProductController],
-  providers: [ProductRepository, ProductService],
-  exports: [ProductRepository, ProductService],
+  providers: [ProductRepository, ProductImageRepository, ProductService],
+  exports: [ProductRepository, ProductImageRepository, ProductService],
 })
 export default class ProductModule {}

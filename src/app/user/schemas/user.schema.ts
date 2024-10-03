@@ -17,6 +17,9 @@ export class User implements IUser {
   @Prop({ type: String })
   middleName: string;
 
+  @Prop({ type: String })
+  telephone: string;
+
   @Prop({ type: String, required: true })
   email: string;
 

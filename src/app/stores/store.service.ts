@@ -20,7 +20,15 @@ export class StoreService extends BaseService<StoreRepository, QueryUserDto, Cre
     const stores = await this.storeRepository.find({});
 
     const data = stores.map((store) => {
-      return {};
+      return {
+        _id: store.name,
+        domain: store.domain,
+        tagline: store.tagline,
+        businessType: store.businessType,
+        'counters.products': store.counters.product,
+        'counters.orders': store.counters.orders,
+        'counters.customers': store.counters.customers,
+      };
     });
 
     const rows = [];

@@ -9,15 +9,29 @@ import { createVendor } from 'src/services/aws/cognito';
 
 @Injectable()
 export class TransactionService extends BaseService<TransactionRepository, null, null, null> {
-  constructor(private readonly storeRepository: TransactionRepository) {
-    super(storeRepository, 'store');
+  constructor(private readonly transactionRepository: TransactionRepository) {
+    super(transactionRepository, 'transaction');
   }
 
   async export(): Promise<any> {
-    const stores = await this.storeRepository.find({});
+    const transactions = await this.transactionRepository.find({});
 
-    const data = stores.map((store) => {
-      return {};
+    const data = transactions.map((transaction) => {
+      return {
+        _id: transaction._id,
+        amount: transaction.amount,
+        type: transaction.type,
+        description: transaction.description,
+        storeId: transaction.storeId,
+        gatewayId: transaction.gatewayId,
+        vendorId: transaction.vendorId,
+        domain: transaction.domain,
+        status: transaction.status,
+        reference: transaction.reference,
+        gatewayResponse: transaction.gatewayResponse,
+        paidAt: transaction.paidAt,
+        currency: transaction.currency,
+      };
     });
 
     const rows = [];
@@ -35,15 +49,15 @@ export class TransactionService extends BaseService<TransactionRepository, null,
   async migrate(filePayload: FileDto): Promise<{ data: any; message: string }> {
     try {
       const { file } = filePayload;
-      const stores: any[] = getFileTransactionDetails(file);
+      const transactions: any[] = getFileTransactionDetails(file);
 
-      const storeCreationPromises = stores.map((store) => {
-        const { firstName, lastName, email } = store;
+      const transactionCreationPromises = transactions.map((transaction) => {
+        const { firstName, lastName, email } = transaction;
 
         return createVendor({ email, firstName, lastName });
       });
 
-      await Promise.all(storeCreationPromises);
+      await Promise.all(transactionCreationPromises);
 
       return { data: null, message: 'Migrated sent successfully' };
     } catch (error) {

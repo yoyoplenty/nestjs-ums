@@ -17,7 +17,20 @@ export class OrderService extends BaseService<OrderRepository, null, null, null>
     const orders = await this.orderRepository.find({});
 
     const data = orders.map((order) => {
-      return {};
+      return {
+        _id: order._id,
+        transactionId: order.transactionId,
+        transactionRef: order.transactionRef,
+        paymentMethod: order.paymentMethod,
+        orderNo: order.orderNo,
+        status: order.status,
+        storeId: order.storeId,
+        customerId: order.customerId,
+        addressId: order.addressId,
+        products: order.products,
+        couponCode: order.couponCode,
+        note: order.note,
+      };
     });
 
     const rows = [];

@@ -13,6 +13,9 @@ export class Order implements IOrder {
   amount: number; // Required field
 
   @Prop()
+  transactionId?: string; // Optional field
+
+  @Prop()
   transactionRef?: string; // Optional field
 
   @Prop()
@@ -44,6 +47,9 @@ export class Order implements IOrder {
 
   @Prop()
   receiptUrl?: string;
+
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  products?: Record<string, string>; // Optional field
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;

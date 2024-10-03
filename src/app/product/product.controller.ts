@@ -22,6 +22,17 @@ export class ProductController {
     }
   }
 
+  @Get('/export/image')
+  async exportImages(@Res() res: Response) {
+    try {
+      const response = await this.productService.exportImages();
+
+      return res.sendFile(`${response}`);
+    } catch (error) {
+      return ErrorResponse(res, error);
+    }
+  }
+
   @ApiConsumes('multipart/form-data')
   @FormDataRequest()
   @Post('migrate')
