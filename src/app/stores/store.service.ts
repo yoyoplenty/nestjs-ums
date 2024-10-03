@@ -6,9 +6,12 @@ import { Workbook } from 'exceljs';
 import { FileDto } from 'src/utils/dto/file.dto';
 import { getFileStoreDetails } from './helpers/stores';
 import { createVendor } from 'src/services/aws/cognito';
+import { QueryUserDto } from '../user/dto/query-user.dto';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UpdateUserDto } from '../user/dto/update-user.dto';
 
 @Injectable()
-export class StoreService extends BaseService<StoreRepository, null, null, null> {
+export class StoreService extends BaseService<StoreRepository, QueryUserDto, CreateUserDto, UpdateUserDto> {
   constructor(private readonly storeRepository: StoreRepository) {
     super(storeRepository, 'store');
   }

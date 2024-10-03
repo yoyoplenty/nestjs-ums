@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IStore } from '../types/store.interface';
 
@@ -42,14 +42,14 @@ export class Store implements IStore {
   @Prop()
   termsAndConditions: string;
 
-  @Prop()
-  socialMedia: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  socialMedia: Record<string, any>;
 
-  @Prop()
-  counters: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  counters: Record<string, any>;
 
-  @Prop()
-  meta: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  meta: Record<string, any>;
 }
 
 export const StoreSchema = SchemaFactory.createForClass(Store);

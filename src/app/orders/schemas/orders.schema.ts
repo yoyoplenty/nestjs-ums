@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IOrder } from '../types/order.interface';
 
@@ -45,8 +45,8 @@ export class Order implements IOrder {
   @Prop()
   receiptUrl?: string;
 
-  @Prop()
-  meta: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  meta: Record<string, any>;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

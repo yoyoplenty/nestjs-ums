@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IProduct } from '../types/product.interface';
 
@@ -15,8 +15,8 @@ export class Product implements IProduct {
   @Prop()
   name: string;
 
-  @Prop()
-  images?: any; // Optional array of ProductImage
+  @Prop({ type: [SchemaTypes.Mixed], required: false })
+  images?: Record<string, any>[];
 
   @Prop()
   price: number;
@@ -39,17 +39,17 @@ export class Product implements IProduct {
   @Prop()
   outOfStock?: boolean; // Optional field
 
-  @Prop()
-  reviews?: any; // Optional array of reviews
+  @Prop({ type: [SchemaTypes.Mixed], required: false })
+  reviews?: Record<string, any>[];
 
-  @Prop()
-  meta?: any; // Optional field
+  @Prop({ type: [SchemaTypes.Mixed], required: false })
+  tags: Record<string, any>[];
 
-  @Prop()
-  tags?: any; // Optional array of tags
+  @Prop({ type: [SchemaTypes.Mixed], required: false })
+  properties?: Record<string, any>[];
 
-  @Prop()
-  properties?: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  meta: Record<string, any>;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

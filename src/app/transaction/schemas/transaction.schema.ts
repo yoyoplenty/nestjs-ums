@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ITransaction } from '../types/transaction.interface';
 
@@ -7,43 +7,43 @@ export type TransactionDocument = HydratedDocument<Transaction>;
 @Schema({ collection: 'transactions', versionKey: false, timestamps: true })
 export class Transaction implements ITransaction {
   @Prop()
-  gatewayId: number; // Required field
+  gatewayId: number;
 
   @Prop()
-  storeId: string; // Required field
+  storeId: string;
 
   @Prop()
-  vendorId: string; // Assuming ObjectID is represented as a string
+  vendorId: string;
 
   @Prop()
-  domain: string; // Required field
+  domain: string;
 
   @Prop()
-  status: string; // Required field
+  status: string;
 
   @Prop()
-  reference: string; // Required field
+  reference: string;
 
   @Prop()
-  amount: number; // Required field
+  amount: number;
 
   @Prop()
-  gatewayResponse: string; // Required field
+  gatewayResponse: string;
 
   @Prop()
-  paidAt: string; // Required field (assuming it's a string timestamp)
+  paidAt: string;
 
   @Prop()
-  currency: string; // Required field
+  currency: string;
 
   @Prop()
-  type: string; // Required field
+  type: string;
 
   @Prop()
-  description: string; // Required field
+  description: string;
 
-  @Prop()
-  meta?: any;
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  meta: Record<string, any>;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
