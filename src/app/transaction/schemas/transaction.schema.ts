@@ -7,49 +7,43 @@ export type TransactionDocument = HydratedDocument<Transaction>;
 @Schema({ collection: 'transactions', versionKey: false, timestamps: true })
 export class Transaction implements ITransaction {
   @Prop()
-  name: string;
+  gatewayId: number; // Required field
 
   @Prop()
-  tagline: string;
+  storeId: string; // Required field
 
   @Prop()
-  businessType: string;
+  vendorId: string; // Assuming ObjectID is represented as a string
 
   @Prop()
-  color: string;
+  domain: string; // Required field
 
   @Prop()
-  theme: string;
+  status: string; // Required field
 
   @Prop()
-  domain: string;
+  reference: string; // Required field
 
   @Prop()
-  favicon: String;
+  amount: number; // Required field
 
   @Prop()
-  logo: String;
+  gatewayResponse: string; // Required field
 
   @Prop()
-  referralCode: String;
+  paidAt: string; // Required field (assuming it's a string timestamp)
 
   @Prop()
-  aboutUs: String;
+  currency: string; // Required field
 
   @Prop()
-  privacyPolicy: String;
+  type: string; // Required field
 
   @Prop()
-  termsAndConditions: String;
+  description: string; // Required field
 
   @Prop()
-  socialMedia: any;
-
-  @Prop()
-  counters: any;
-
-  @Prop()
-  meta: any;
+  meta?: any;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

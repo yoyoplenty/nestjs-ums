@@ -7,12 +7,12 @@ export interface IStore {
   color: string;
   theme: string; //HAS CHANGED
   domain: string;
-  favicon: String;
-  logo: String;
-  referralCode: String;
-  aboutUs: String;
-  privacyPolicy: String;
-  termsAndConditions: String;
+  favicon: string;
+  logo: string;
+  referralCode: string;
+  aboutUs: string;
+  privacyPolicy: string;
+  termsAndConditions: string;
   socialMedia: any;
   counters: any;
   meta: any;

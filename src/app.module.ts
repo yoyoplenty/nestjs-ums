@@ -12,6 +12,8 @@ import { CampaignModule } from './app/campaign/campaign.module';
 import StoreModule from './app/stores/store.module';
 import OrderModule from './app/orders/order.module';
 import TransactionModule from './app/transaction/transaction.module';
+import ProductModule from './app/product/product.module';
+import BankModule from './app/bank/bank.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import TransactionModule from './app/transaction/transaction.module';
     StoreModule,
     OrderModule,
     TransactionModule,
+    ProductModule,
+    BankModule,
   ],
   controllers: [AppController],
   providers: [

@@ -25,22 +25,22 @@ export class Store implements IStore {
   domain: string;
 
   @Prop()
-  favicon: String;
+  favicon: string;
 
   @Prop()
-  logo: String;
+  logo: string;
 
   @Prop()
-  referralCode: String;
+  referralCode: string;
 
   @Prop()
-  aboutUs: String;
+  aboutUs: string;
 
   @Prop()
-  privacyPolicy: String;
+  privacyPolicy: string;
 
   @Prop()
-  termsAndConditions: String;
+  termsAndConditions: string;
 
   @Prop()
   socialMedia: any;
