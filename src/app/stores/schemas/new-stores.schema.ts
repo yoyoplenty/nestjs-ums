@@ -3,10 +3,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IStore } from '../types/store.interface';
 import { ObjectId } from 'mongodb';
 
-export type StoreDocument = HydratedDocument<Store>;
+export type NewStoreDocument = HydratedDocument<NewStore>;
 
-@Schema({ collection: 'stores', versionKey: false, timestamps: true })
-export class Store implements IStore {
+@Schema({ collection: 'stores', versionKey: false, timestamps: false })
+export class NewStore implements IStore {
   @Prop()
   name: string;
 
@@ -56,4 +56,4 @@ export class Store implements IStore {
   meta: Record<string, any>;
 }
 
-export const StoreSchema = SchemaFactory.createForClass(Store);
+export const NewStoreSchema = SchemaFactory.createForClass(NewStore);

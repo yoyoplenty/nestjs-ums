@@ -7,7 +7,7 @@ import { Bank, BankSchema } from './schemas/bank.schema';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Bank.name, schema: BankSchema }]), NestjsFormDataModule],
+  imports: [MongooseModule.forFeature([{ name: Bank.name, schema: BankSchema }], 'new'), NestjsFormDataModule],
   controllers: [BankController],
   providers: [BankRepository, BankService],
   exports: [BankRepository, BankService],

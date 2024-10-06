@@ -4,7 +4,7 @@ import { Bank, BankDocument } from './schemas/bank.schema';
 import { BaseRepository } from '../../repositories/base-repository';
 
 export class BankRepository extends BaseRepository<BankDocument> {
-  constructor(@InjectModel(Bank.name) private bankModel: Model<BankDocument>) {
+  constructor(@InjectModel(Bank.name, 'new') private bankModel: Model<BankDocument>) {
     super(bankModel);
   }
 }

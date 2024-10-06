@@ -14,11 +14,14 @@ import OrderModule from './app/orders/order.module';
 import TransactionModule from './app/transaction/transaction.module';
 import ProductModule from './app/product/product.module';
 import BankModule from './app/bank/bank.module';
+import PlanModule from './app/plan/plan.module';
+import SubscriptionModule from './app/subscription/subscription.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(process.env.MONGO_URI, { connectionName: 'old' }),
+    MongooseModule.forRoot(process.env.NEW_MONGO_URI, { connectionName: 'new' }),
     UserModule,
     AuthModule,
     FacebookOauthModule,
@@ -28,6 +31,8 @@ import BankModule from './app/bank/bank.module';
     TransactionModule,
     ProductModule,
     BankModule,
+    PlanModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [

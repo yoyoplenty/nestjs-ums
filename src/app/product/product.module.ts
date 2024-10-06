@@ -10,10 +10,13 @@ import { ProductImageRepository } from './repository/product-image.repository';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Product.name, schema: ProductSchema },
-      { name: ProductImage.name, schema: ProductImageSchema },
-    ]),
+    MongooseModule.forFeature(
+      [
+        { name: Product.name, schema: ProductSchema },
+        { name: ProductImage.name, schema: ProductImageSchema },
+      ],
+      'new',
+    ),
     NestjsFormDataModule,
   ],
   controllers: [ProductController],

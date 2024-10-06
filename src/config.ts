@@ -4,6 +4,7 @@ dotenv.config();
 export const config = {
   port: process.env.PORT,
   mongoUri: process.env.MONGO_URI,
+  newMongoUri: process.env.NEW_MONGO_URI,
   facebook: {
     appId: process.env.FB_APP_ID,
     appSecret: process.env.FB_APP_SECRET,

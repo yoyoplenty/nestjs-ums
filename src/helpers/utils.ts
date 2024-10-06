@@ -67,3 +67,11 @@ export const filterUsers = (users: any[], filter?: Record<string, any>) => {
 
   return filteredUsers;
 };
+
+export const meta = {
+  createdAt: new Date(),
+  active: true,
+  activatedAt: new Date(),
+  deactivatedAt: null,
+  updatedAt: null,
+};

@@ -6,30 +6,39 @@ import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { User, UserSchema } from './schemas/user.schema';
 import { NestjsFormDataModule } from 'nestjs-form-data';
+import StoreModule from '../stores/store.module';
+import SubscriptionModule from '../subscription/subscription.module';
+import PlanModule from '../plan/plan.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        name: User.name,
-        useFactory: () => {
-          UserSchema.plugin(require('mongoose-autopopulate'));
+    MongooseModule.forFeatureAsync(
+      [
+        {
+          name: User.name,
+          useFactory: () => {
+            UserSchema.plugin(require('mongoose-autopopulate'));
 
-          UserSchema.pre('save', function () {
-            console.log('Hello from pre save');
-            console.log(this.password);
-            //TODO, Hash password and create verification token
-            // if (!this.isModified("password")) return next();
-            // const salt = await bcrypt.genSalt(10);
-            // this.password = await bcrypt.hash(this.password, salt);
-            // this.confirm_token = await utility.generateToken();
-          });
+            UserSchema.pre('save', function () {
+              console.log('Hello from pre save');
+              console.log(this.password);
+              //TODO, Hash password and create verification token
+              // if (!this.isModified("password")) return next();
+              // const salt = await bcrypt.genSalt(10);
+              // this.password = await bcrypt.hash(this.password, salt);
+              // this.confirm_token = await utility.generateToken();
+            });
 
-          return UserSchema;
+            return UserSchema;
+          },
         },
-      },
-    ]),
+      ],
+      'old',
+    ),
     NestjsFormDataModule,
+    StoreModule,
+    PlanModule,
+    SubscriptionModule,
   ],
   controllers: [UserController],
   providers: [UserRepository, UserService],

@@ -11,27 +11,27 @@ import { StoreService } from './store.service';
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
-  @Get('/export')
-  async export(@Res() res: Response) {
-    try {
-      const response = await this.storeService.export();
+  // @Get('/export')
+  // async export(@Res() res: Response) {
+  //   try {
+  //     const response = await this.storeService.export();
 
-      return res.sendFile(`${response}`);
-    } catch (error) {
-      return ErrorResponse(res, error);
-    }
-  }
+  //     return res.sendFile(`${response}`);
+  //   } catch (error) {
+  //     return ErrorResponse(res, error);
+  //   }
+  // }
 
-  @ApiConsumes('multipart/form-data')
-  @FormDataRequest()
-  @Post('migrate')
-  async migrate(@Body() filePayload: FileDto, @Res() res: Response) {
-    try {
-      const response = await this.storeService.migrate(filePayload);
+  // @ApiConsumes('multipart/form-data')
+  // @FormDataRequest()
+  // @Post('migrate')
+  // async migrate(@Body() filePayload: FileDto, @Res() res: Response) {
+  //   try {
+  //     const response = await this.storeService.migrate(filePayload);
 
-      return JsonResponse(res, response);
-    } catch (error) {
-      return ErrorResponse(res, error);
-    }
-  }
+  //     return JsonResponse(res, response);
+  //   } catch (error) {
+  //     return ErrorResponse(res, error);
+  //   }
+  // }
 }

@@ -7,7 +7,10 @@ import { Transaction, TransactionSchema } from './schemas/transaction.schema';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Transaction.name, schema: TransactionSchema }]), NestjsFormDataModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Transaction.name, schema: TransactionSchema }], 'new'),
+    NestjsFormDataModule,
+  ],
   controllers: [TransactionController],
   providers: [TransactionRepository, TransactionService],
   exports: [TransactionRepository, TransactionService],

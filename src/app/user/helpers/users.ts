@@ -5,9 +5,10 @@ export const getFileUserDetails = (file: MemoryStoredFile): any[] => {
   const result: Record<string, Record<string, string>[]> = excelToJson({
     source: file.buffer,
     columnToKey: {
-      A: 'firstName',
-      B: 'lastName',
-      C: 'email',
+      A: '_id',
+      B: 'firstName',
+      C: 'lastName',
+      D: 'email',
     },
     header: { rows: 1 },
   });
@@ -16,6 +17,7 @@ export const getFileUserDetails = (file: MemoryStoredFile): any[] => {
 
   const userDetails: any[] = userMailingDetails.map((mailingUserDetails: Record<string, string>) => {
     return {
+      _id: mailingUserDetails._id,
       email: mailingUserDetails.email,
       lastName: mailingUserDetails.lastName,
       firstName: mailingUserDetails.firstName,
@@ -24,3 +26,7 @@ export const getFileUserDetails = (file: MemoryStoredFile): any[] => {
 
   return userDetails;
 };
+
+export function generateSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
