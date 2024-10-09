@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IProductImage } from '../types/product-image.interface';
 
@@ -6,10 +6,10 @@ export type ProductImageDocument = HydratedDocument<ProductImage>;
 
 @Schema({ collection: 'productImages', versionKey: false, timestamps: true })
 export class ProductImage implements IProductImage {
-  @Prop()
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
   storeId: string;
 
-  @Prop()
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
   productId: string;
 
   @Prop()

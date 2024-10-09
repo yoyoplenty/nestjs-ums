@@ -17,15 +17,33 @@ import { SubscriptionRepository } from '../subscription/subscription.repository'
 import { NewStoreVendorRepository } from '../stores/repository/new-store-vendor.repository';
 import { NewStoreRepository } from '../stores/repository/new-store.repository';
 import { meta } from 'src/helpers/utils';
+import { OrderRepository } from '../orders/repository/order.repository';
+import { ProductRepository } from '../product/repository/product.repository';
+import { ProductImageRepository } from '../product/repository/product-image.repository';
+import { TransactionRepository } from '../transaction/repository/transaction.repository';
+import { NewOrderRepository } from '../orders/repository/new-order.repository';
+import { NewProductRepository } from '../product/repository/new-product.repository';
+import { NewTransactionRepository } from '../transaction/repository/new-transaction.repository';
+import { NewProductImageRepository } from '../product/repository/new-product-image.repository';
 
 @Injectable()
 export class UserService extends BaseService<UserRepository, QueryUserDto, CreateUserDto, UpdateUserDto> {
   constructor(
     private readonly user: UserRepository,
     private readonly store: StoreRepository,
-    private readonly newStore: NewStoreRepository,
+    private readonly order: OrderRepository,
+    private readonly product: ProductRepository,
+    private readonly transaction: TransactionRepository,
     private readonly storeVendor: StoreVendorRepository,
+    private readonly productImage: ProductImageRepository,
+
     private readonly subscription: SubscriptionRepository,
+
+    private readonly newOrder: NewOrderRepository,
+    private readonly newStore: NewStoreRepository,
+    private readonly newProduct: NewProductRepository,
+    private readonly newTransaction: NewTransactionRepository,
+    private readonly newProductImage: NewProductImageRepository,
     private readonly newStoreVendor: NewStoreVendorRepository,
   ) {
     super(user, 'user');
@@ -75,9 +93,18 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
         const { _id, firstName, lastName, email } = user;
 
         const storeVendors = await this.storeVendor.find({ role: 'owner', vendorId: _id });
+
         if (storeVendors.length > 0) {
-          const store = await this.store.findById(new ObjectId(storeVendors[0].storeId));
-          console.log('This is the store ---->>>>>>>', store);
+          const storeId = new ObjectId(storeVendors[0].storeId);
+
+          const store = await this.store.findById(storeId);
+          console.log('This is the old store ---->>>>>>>', store);
+
+          const products = await this.product.find({ storeId: store._id });
+          console.log('This are the old products ---->>>>>>>', products);
+
+          const transactions = await this.transaction.find({ storeId: store._id });
+          console.log('This are the old transactions ---->>>>>>>', transactions);
 
           // Create a new vendor
           const newUser = await createVendor({ email, firstName, lastName });
@@ -85,10 +112,15 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
 
           const payload = {
             name: store.name,
+            oldId: new ObjectId(store._id),
             domain: store.domain,
             tagline: store.tagline,
             businessSize: null,
-            categoryId: new ObjectId('663cc86229ed1c6052999d02'),
+            counters: {
+              products: store.counters.products,
+              orders: store.counters.orders,
+              customers: store.counters.customers,
+            },
             isActive: true,
             meta,
           };
@@ -104,6 +136,52 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
 
           await this.createFreePlan(newUser.userId);
           console.log('Free plan was created');
+
+          // Migrate old products with the new store ID
+          for (const product of products) {
+            const newProductPayload = {
+              storeId: new ObjectId(newStore._id),
+              shortId: product.shortId,
+              vendorId: newUser.userId,
+              name: product.name,
+              price: product.price,
+              description: product.description,
+              quantity: product.quantity,
+              outOfStock: product.outOfStock || false,
+              meta: product.meta,
+              isDraft: false,
+            };
+
+            const newProductEntity = await this.newProduct.create(newProductPayload);
+            console.log('Migrated product:', newProductEntity);
+
+            // Migrate product images
+            const images = await this.productImage.find({ productId: new ObjectId(product._id) });
+            console.log('Migrated product images:', images);
+
+            for (const image of images) {
+              const newImagePayload = {
+                ...image,
+                type: 'MAIN',
+                storeId: new ObjectId(newStore._id),
+                productId: new ObjectId(newProductEntity._id),
+              };
+
+              await this.newProductImage.create(newImagePayload);
+              console.log('Migrated product image:', newImagePayload);
+            }
+          }
+
+          // Migrate old transactions with the new store ID
+          for (const transaction of transactions) {
+            const newTransactionPayload = {
+              ...transaction,
+              storeId: new ObjectId(newStore._id),
+            };
+
+            await this.newTransaction.create(newTransactionPayload);
+            console.log('Migrated transaction:', newTransactionPayload);
+          }
         }
       }
 

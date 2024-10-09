@@ -43,6 +43,9 @@ export class Store implements IStore {
   @Prop()
   termsAndConditions: string;
 
+  @Prop({ type: SchemaTypes.ObjectId, required: false })
+  oldId?: ObjectId;
+
   @Prop({ type: SchemaTypes.ObjectId, required: true })
   categoryId?: ObjectId;
 

@@ -6,8 +6,8 @@ export type ProductDocument = HydratedDocument<Product>;
 
 @Schema({ collection: 'products', versionKey: false, timestamps: true })
 export class Product implements IProduct {
-  @Prop()
-  storeId: string; // Assuming ObjectID is represented as a string
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  storeId: any;
 
   @Prop()
   vendorId: string; // Assuming ObjectID is represented as a string

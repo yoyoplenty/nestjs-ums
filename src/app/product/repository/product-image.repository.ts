@@ -4,7 +4,7 @@ import { ProductImage, ProductImageDocument } from '../schemas/product-image.sch
 import { BaseRepository } from '../../../repositories/base-repository';
 
 export class ProductImageRepository extends BaseRepository<ProductImageDocument> {
-  constructor(@InjectModel(ProductImage.name, 'new') private productImageImageModel: Model<ProductImageDocument>) {
+  constructor(@InjectModel(ProductImage.name, 'old') private productImageImageModel: Model<ProductImageDocument>) {
     super(productImageImageModel);
   }
 }

@@ -1,11 +1,11 @@
 import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ITransaction } from '../types/transaction.interface';
+import { INewTransaction } from '../types/new-transaction.interface';
 
-export type TransactionDocument = HydratedDocument<Transaction>;
+export type NewTransactionDocument = HydratedDocument<NewTransaction>;
 
-@Schema({ collection: 'transactions', versionKey: false, timestamps: true })
-export class Transaction implements ITransaction {
+@Schema({ collection: 'transactions', versionKey: false, timestamps: false })
+export class NewTransaction implements INewTransaction {
   @Prop()
   gatewayId: number;
 
@@ -46,4 +46,4 @@ export class Transaction implements ITransaction {
   meta: Record<string, any>;
 }
 
-export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+export const NewTransactionSchema = SchemaFactory.createForClass(NewTransaction);

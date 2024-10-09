@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../services/base-service';
-import { OrderRepository } from './order.repository';
+import { OrderRepository } from './repository/order.repository';
 import { saveTempFile } from 'src/helpers/temp-file';
 import { Workbook } from 'exceljs';
 import { FileDto } from 'src/utils/dto/file.dto';

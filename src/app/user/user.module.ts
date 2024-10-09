@@ -9,6 +9,9 @@ import { NestjsFormDataModule } from 'nestjs-form-data';
 import StoreModule from '../stores/store.module';
 import SubscriptionModule from '../subscription/subscription.module';
 import PlanModule from '../plan/plan.module';
+import OrderModule from '../orders/order.module';
+import ProductModule from '../product/product.module';
+import TransactionModule from '../transaction/transaction.module';
 
 @Module({
   imports: [
@@ -36,8 +39,11 @@ import PlanModule from '../plan/plan.module';
       'old',
     ),
     NestjsFormDataModule,
-    StoreModule,
     PlanModule,
+    StoreModule,
+    OrderModule,
+    ProductModule,
+    TransactionModule,
     SubscriptionModule,
   ],
   controllers: [UserController],

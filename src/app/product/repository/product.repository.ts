@@ -4,7 +4,7 @@ import { Product, ProductDocument } from '../schemas/product.schema';
 import { BaseRepository } from '../../../repositories/base-repository';
 
 export class ProductRepository extends BaseRepository<ProductDocument> {
-  constructor(@InjectModel(Product.name, 'new') private productModel: Model<ProductDocument>) {
+  constructor(@InjectModel(Product.name, 'old') private productModel: Model<ProductDocument>) {
     super(productModel);
   }
 }

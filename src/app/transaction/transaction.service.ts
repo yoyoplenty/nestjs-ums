@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../services/base-service';
-import { TransactionRepository } from './transaction.repository';
+import { TransactionRepository } from './repository/transaction.repository';
 import { saveTempFile } from 'src/helpers/temp-file';
 import { Workbook } from 'exceljs';
 import { FileDto } from 'src/utils/dto/file.dto';

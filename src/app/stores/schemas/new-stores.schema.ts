@@ -43,8 +43,11 @@ export class NewStore implements IStore {
   @Prop()
   termsAndConditions: string;
 
-  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  @Prop({ type: SchemaTypes.ObjectId, required: false })
   categoryId?: ObjectId;
+
+  @Prop({ type: SchemaTypes.ObjectId, required: false })
+  oldId?: ObjectId;
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   socialMedia: Record<string, any>;
