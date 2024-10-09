@@ -40,6 +40,9 @@ export class Transaction implements ITransaction {
   type: string;
 
   @Prop()
+  source: string;
+
+  @Prop()
   description: string;
 
   @Prop({ type: SchemaTypes.Mixed, required: false })

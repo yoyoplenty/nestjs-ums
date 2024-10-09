@@ -37,6 +37,9 @@ export class NewTransaction implements INewTransaction {
   currency: string;
 
   @Prop()
+  source: string;
+
+  @Prop()
   type: string;
 
   @Prop()

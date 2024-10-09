@@ -90,98 +90,115 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
       const users: any[] = getFileUserDetails(file);
 
       for (const user of users) {
-        const { _id, firstName, lastName, email } = user;
+        try {
+          const { _id, firstName, lastName, email } = user;
 
-        const storeVendors = await this.storeVendor.find({ role: 'owner', vendorId: _id });
+          const storeVendors = await this.storeVendor.find({ role: 'owner', vendorId: _id });
 
-        if (storeVendors.length > 0) {
-          const storeId = new ObjectId(storeVendors[0].storeId);
+          if (storeVendors.length > 0) {
+            const storeId = new ObjectId(storeVendors[0].storeId);
 
-          const store = await this.store.findById(storeId);
-          console.log('This is the old store ---->>>>>>>', store);
+            const store = await this.store.findById(storeId);
+            console.log('This is the old store ---->>>>>>>', store);
 
-          const products = await this.product.find({ storeId: store._id });
-          console.log('This are the old products ---->>>>>>>', products);
+            const products = await this.product.find({ storeId: store._id });
+            console.log('This are the old products ---->>>>>>>', products);
 
-          const transactions = await this.transaction.find({ storeId: store._id });
-          console.log('This are the old transactions ---->>>>>>>', transactions);
+            const transactions = await this.transaction.find({ storeId: store._id });
+            console.log('This are the old transactions ---->>>>>>>', transactions);
 
-          // Create a new vendor
-          const newUser = await createVendor({ email, firstName, lastName });
-          console.log('This is the new vendor ---->>>>>>>', newUser);
+            // Create a new vendor
+            const newUser = await createVendor({ email, firstName, lastName });
+            console.log('This is the new vendor ---->>>>>>>', newUser);
 
-          const payload = {
-            name: store.name,
-            oldId: new ObjectId(store._id),
-            domain: store.domain,
-            tagline: store.tagline,
-            businessSize: null,
-            counters: {
-              products: store.counters.products,
-              orders: store.counters.orders,
-              customers: store.counters.customers,
-            },
-            isActive: true,
-            meta,
-          };
-
-          const newStore = await this.newStore.create(payload);
-          console.log('This is the new store----->>XXXXXX', newStore);
-
-          await updateUser(newUser.userId, 'custom:activeStoreId', String(newStore._id));
-          console.log('cognito user was updated');
-
-          await this.newStoreVendor.create({ role: 'owner', vendorId: newUser.userId, storeId: newStore._id, meta });
-          console.log('The new Store vendor was created');
-
-          await this.createFreePlan(newUser.userId);
-          console.log('Free plan was created');
-
-          // Migrate old products with the new store ID
-          for (const product of products) {
-            const newProductPayload = {
-              storeId: new ObjectId(newStore._id),
-              shortId: product.shortId,
-              vendorId: newUser.userId,
-              name: product.name,
-              price: product.price,
-              description: product.description,
-              quantity: product.quantity,
-              outOfStock: product.outOfStock || false,
-              meta: product.meta,
-              isDraft: false,
+            const payload = {
+              name: store.name,
+              oldId: new ObjectId(store._id),
+              domain: store.domain,
+              tagline: store.tagline,
+              businessSize: null,
+              counters: {
+                products: store.counters.products,
+                orders: store.counters.orders,
+                customers: store.counters.customers,
+              },
+              isActive: true,
+              meta,
             };
 
-            const newProductEntity = await this.newProduct.create(newProductPayload);
-            console.log('Migrated product:', newProductEntity);
+            const newStore = await this.newStore.create(payload);
+            console.log('This is the new store----->>XXXXXX', newStore);
 
-            // Migrate product images
-            const images = await this.productImage.find({ productId: new ObjectId(product._id) });
-            console.log('Migrated product images:', images);
+            await updateUser(newUser.userId, 'custom:activeStoreId', String(newStore._id));
+            console.log('cognito user was updated');
 
-            for (const image of images) {
-              const newImagePayload = {
-                ...image,
-                type: 'MAIN',
+            await this.newStoreVendor.create({ role: 'owner', vendorId: newUser.userId, storeId: newStore._id, meta });
+            console.log('The new Store vendor was created');
+
+            await this.createFreePlan(newUser.userId);
+            console.log('Free plan was created');
+
+            // Migrate old products with the new store ID
+            for (const product of products) {
+              const newProductPayload = {
                 storeId: new ObjectId(newStore._id),
-                productId: new ObjectId(newProductEntity._id),
+                shortId: product.shortId,
+                vendorId: newUser.userId,
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                quantity: product.quantity,
+                outOfStock: product.outOfStock || false,
+                meta: product.meta,
+                isDraft: false,
               };
 
-              await this.newProductImage.create(newImagePayload);
-              console.log('Migrated product image:', newImagePayload);
+              const newProductEntity = await this.newProduct.create(newProductPayload);
+              console.log('Migrated product:', newProductEntity);
+
+              // Migrate product images
+              const images = await this.productImage.find({ productId: new ObjectId(product._id) });
+              console.log('Migrated product images:', images);
+
+              for (const image of images) {
+                const newImagePayload = {
+                  ...image,
+                  type: 'MAIN',
+                  storeId: new ObjectId(newStore._id),
+                  productId: new ObjectId(newProductEntity._id),
+                  meta,
+                };
+
+                await this.newProductImage.create(newImagePayload);
+                console.log('Migrated product image:', newImagePayload);
+              }
+            }
+
+            // Migrate old transactions with the new store ID
+            for (const transaction of transactions) {
+              const newTransactionPayload = {
+                gatewayId: transaction.gatewayId,
+                domain: transaction.domain,
+                status: String(transaction.status).toUpperCase(),
+                reference: transaction.reference,
+                amount: Number(transaction.amount),
+                gatewayResponse: transaction.gatewayResponse,
+                paidAt: transaction.paidAt,
+                currency: transaction.currency,
+                type: transaction.type,
+                source: transaction.source,
+                description: transaction.description,
+                storeId: new ObjectId(newStore._id),
+                meta,
+              };
+
+              await this.newTransaction.create(newTransactionPayload);
+              console.log('Migrated transaction:', newTransactionPayload);
             }
           }
-
-          // Migrate old transactions with the new store ID
-          for (const transaction of transactions) {
-            const newTransactionPayload = {
-              ...transaction,
-              storeId: new ObjectId(newStore._id),
-            };
-
-            await this.newTransaction.create(newTransactionPayload);
-            console.log('Migrated transaction:', newTransactionPayload);
-          }
+        } catch (error) {
+          console.log(error);
+          continue;
         }
       }
 
