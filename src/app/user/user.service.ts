@@ -116,7 +116,8 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
               oldId: new ObjectId(store._id),
               domain: store.domain,
               tagline: store.tagline,
-              businessSize: null,
+              businessSize: 'Medium scale business (49-80 employees)',
+              categoryId: new ObjectId('663cc466ba9e18b2db34a5cb'),
               counters: {
                 products: store.counters.products,
                 orders: store.counters.orders,
@@ -142,6 +143,7 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
             for (const product of products) {
               const newProductPayload = {
                 storeId: new ObjectId(newStore._id),
+                categoryId: new ObjectId('663ccb06f34b6a4635712992'),
                 shortId: product.shortId,
                 vendorId: newUser.userId,
                 name: product.name,
@@ -162,7 +164,10 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
 
               for (const image of images) {
                 const newImagePayload = {
-                  ...image,
+                  src: image.src,
+                  width: image.width,
+                  height: image.height,
+                  position: image.position,
                   type: 'MAIN',
                   storeId: new ObjectId(newStore._id),
                   productId: new ObjectId(newProductEntity._id),

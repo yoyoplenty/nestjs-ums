@@ -17,6 +17,9 @@ export class NewStore implements IStore {
   businessType: string;
 
   @Prop()
+  businessSize: string;
+
+  @Prop()
   color: string;
 
   @Prop()
@@ -57,6 +60,9 @@ export class NewStore implements IStore {
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;
+
+  @Prop({ type: SchemaTypes.Boolean, required: true, default: true })
+  isActive: boolean;
 }
 
 export const NewStoreSchema = SchemaFactory.createForClass(NewStore);

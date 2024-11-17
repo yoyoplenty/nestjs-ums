@@ -9,6 +9,9 @@ export class NewProduct implements INewProduct {
   @Prop({ type: SchemaTypes.ObjectId, required: true })
   storeId: any;
 
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  categoryId: any;
+
   @Prop()
   vendorId: string;
 
@@ -17,6 +20,9 @@ export class NewProduct implements INewProduct {
 
   @Prop()
   price: number;
+
+  @Prop()
+  brand?: string;
 
   @Prop()
   description?: string;
@@ -29,6 +35,9 @@ export class NewProduct implements INewProduct {
 
   @Prop()
   outOfStock?: boolean;
+
+  @Prop()
+  isDraft?: boolean;
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;

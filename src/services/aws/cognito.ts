@@ -165,6 +165,7 @@ export const createVendor = async ({ email, firstName, lastName }) => {
       { Name: 'email_verified', Value: 'true' },
       { Name: 'family_name', Value: lastName },
       { Name: 'given_name', Value: firstName },
+      { Name: 'custom:type', Value: 'vendor' },
     ],
   };
 

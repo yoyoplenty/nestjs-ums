@@ -26,6 +26,9 @@ export class NewProductImage implements INewProductImage {
 
   @Prop()
   position?: number;
+
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  meta: Record<string, any>;
 }
 
 export const NewProductImageSchema = SchemaFactory.createForClass(NewProductImage);
