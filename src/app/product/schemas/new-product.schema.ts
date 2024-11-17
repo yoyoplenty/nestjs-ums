@@ -1,6 +1,7 @@
 import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { INewProduct } from '../types/new-product.interface';
+import { ObjectId } from 'mongodb';
 
 export type NewProductDocument = HydratedDocument<NewProduct>;
 
@@ -38,6 +39,12 @@ export class NewProduct implements INewProduct {
 
   @Prop()
   isDraft?: boolean;
+
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  variants: ObjectId[];
+
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  collectionIds: ObjectId[];
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;

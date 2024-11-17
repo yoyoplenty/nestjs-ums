@@ -149,10 +149,12 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
                 name: product.name,
                 price: product.price,
                 description: product.description,
-                quantity: product.quantity,
+                quantity: product.quantity || 1,
                 outOfStock: product.outOfStock || false,
                 meta: product.meta,
                 isDraft: false,
+                variants: [],
+                collectionIds: [],
               };
 
               const newProductEntity = await this.newProduct.create(newProductPayload);
