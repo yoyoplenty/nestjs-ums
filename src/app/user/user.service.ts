@@ -167,9 +167,9 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
               for (const image of images) {
                 const newImagePayload = {
                   src: image.src,
-                  width: image.width,
-                  height: image.height,
-                  position: image.position,
+                  width: image.width || 1348,
+                  height: image.height || 1040,
+                  position: image.position || 80,
                   type: 'MAIN',
                   storeId: new ObjectId(newStore._id),
                   productId: new ObjectId(newProductEntity._id),
