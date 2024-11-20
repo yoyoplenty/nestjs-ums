@@ -10,7 +10,7 @@ import { saveTempFile } from 'src/helpers/temp-file';
 import { Workbook } from 'exceljs';
 import { FileDto } from 'src/utils/dto/file.dto';
 import { getFileUserDetails } from './helpers/users';
-import { createVendor, updateUser } from 'src/services/aws/cognito';
+import { createVendor, getAllUsers, updateUser } from 'src/services/aws/cognito';
 import { StoreVendorRepository } from '../stores/repository/store-vendor.repository';
 import { StoreRepository } from '../stores/repository/store.repository';
 import { ObjectId } from 'mongodb';
@@ -88,6 +88,12 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
       for (const user of users) {
         try {
           const { _id, firstName, lastName, email } = user;
+
+          // const existingVendors = await getAllUsers({ email });
+          // if (Array.isArray(existingVendors) && existingVendors.length > 0) {
+          //   console.log(`Vendor with email ${email} already exists, skipping to next user.`);
+          //   continue; // Skip to the next user
+          // }
 
           const storeVendors = await this.storeVendor.find({ role: 'owner', vendorId: _id });
 

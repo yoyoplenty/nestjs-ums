@@ -30,22 +30,51 @@ const cognitoIdentityServiceProvider = new CognitoIdentityProviderClient({});
  * USER (VENDOR)
  */
 
-const listAllUsers = async () => {
-  const params = {
+// const listAllUsers = async () => {
+//   const params = {
+//     UserPoolId: config.aws.userPoolId,
+//   };
+
+//   const command = new ListUsersCommand(params);
+//   const { Users: allUsersObject } = await cognitoIdentityServiceProvider.send(command);
+
+//   return allUsersObject;
+// };
+
+export const listAllUsers = async ({ filter = '', limit = 60, paginationToken = '' } = {}) => {
+  const params: any = {
     UserPoolId: config.aws.userPoolId,
+    ...(filter && { Filter: filter }),
+    Limit: limit,
+    ...(paginationToken && { PaginationToken: paginationToken }),
   };
 
   const command = new ListUsersCommand(params);
-  const { Users: allUsersObject } = await cognitoIdentityServiceProvider.send(command);
+  const { Users: allUsersObject, PaginationToken: nextToken } = await cognitoIdentityServiceProvider.send(command);
 
-  return allUsersObject;
+  if (nextToken) {
+    const nextPageResult = await listAllUsers({
+      filter,
+      limit,
+      paginationToken: nextToken,
+    });
+
+    return {
+      allUsersObject: [...allUsersObject, ...nextPageResult.allUsersObject],
+      nextToken: nextPageResult.nextToken,
+    };
+  }
+
+  return { allUsersObject, nextToken };
 };
 
 export const getAllUsers = async (filter?: Record<string, any>) => {
   try {
     const allUsersObject = await listAllUsers();
 
-    const modifiedUsers = allUsersObject.map((user) => {
+    console.log(allUsersObject);
+
+    const modifiedUsers = allUsersObject.allUsersObject.map((user) => {
       const modifiedUser = {
         ...convertToUserObject(user.Attributes),
         id: user.Username,
