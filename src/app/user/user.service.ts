@@ -143,44 +143,54 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
 
             // Migrate old products with the new store ID
             for (const product of products) {
-              const newProductPayload = {
-                _id: product._id,
-                storeId: new ObjectId(newStore._id),
-                categoryId: new ObjectId('663ccb06f34b6a4635712992'),
-                shortId: product.shortId,
-                vendorId: newUser.userId,
-                name: product.name,
-                price: product.price,
-                description: product.description,
-                quantity: product.quantity || 1,
-                outOfStock: product.outOfStock || false,
-                meta: product.meta,
-                isDraft: false,
-                variants: [],
-                collectionIds: [],
-              };
-
-              const newProductEntity = await this.newProduct.create(newProductPayload);
-              console.log('Migrated product:', newProductEntity);
-
-              // Migrate product images
-              const images = await this.productImage.find({ productId: new ObjectId(product._id) });
-              console.log('Migrated product images:', images);
-
-              for (const image of images) {
-                const newImagePayload = {
-                  src: image.src,
-                  width: image.width || 1348,
-                  height: image.height || 1040,
-                  position: image.position || 80,
-                  type: 'MAIN',
+              try {
+                const newProductPayload = {
+                  _id: product._id,
                   storeId: new ObjectId(newStore._id),
-                  productId: new ObjectId(newProductEntity._id),
-                  meta,
+                  categoryId: new ObjectId('663ccb06f34b6a4635712992'),
+                  shortId: product.shortId,
+                  vendorId: newUser.userId,
+                  name: product.name,
+                  price: product.price,
+                  description: product.description,
+                  quantity: product.quantity || 1,
+                  outOfStock: product.outOfStock || false,
+                  meta: product.meta,
+                  isDraft: false,
+                  variants: [],
+                  collectionIds: [],
                 };
 
-                await this.newProductImage.create(newImagePayload);
-                console.log('Migrated product image:', newImagePayload);
+                const newProductEntity = await this.newProduct.create(newProductPayload);
+                console.log('Migrated product:', newProductEntity);
+
+                // Migrate product images
+                const images = await this.productImage.find({ productId: new ObjectId(product._id) });
+                console.log('Migrated product images:', images);
+
+                for (const image of images) {
+                  try {
+                    const newImagePayload = {
+                      src: image.src,
+                      width: image.width || 1348,
+                      height: image.height || 1040,
+                      position: image.position || 80,
+                      type: 'MAIN',
+                      storeId: new ObjectId(newStore._id),
+                      productId: new ObjectId(newProductEntity._id),
+                      meta,
+                    };
+
+                    await this.newProductImage.create(newImagePayload);
+                    console.log('Migrated product image:', newImagePayload);
+                  } catch (imageError) {
+                    console.error(`Error migrating product image for product ${product._id}:`, imageError);
+                    continue; // Skip to the next image
+                  }
+                }
+              } catch (productError) {
+                console.error(`Error migrating product ${product._id}:`, productError);
+                continue; // Skip to the next product
               }
             }
 
