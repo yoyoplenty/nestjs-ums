@@ -1,3 +1,4 @@
+import { CustomerService } from './../customers/customer.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from './../../services/base-service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,11 +18,9 @@ import { SubscriptionRepository } from '../subscription/subscription.repository'
 import { NewStoreVendorRepository } from '../stores/repository/new-store-vendor.repository';
 import { NewStoreRepository } from '../stores/repository/new-store.repository';
 import { meta } from 'src/helpers/utils';
-import { OrderRepository } from '../orders/repository/order.repository';
 import { ProductRepository } from '../product/repository/product.repository';
 import { ProductImageRepository } from '../product/repository/product-image.repository';
 import { TransactionRepository } from '../transaction/repository/transaction.repository';
-import { NewOrderRepository } from '../orders/repository/new-order.repository';
 import { NewProductRepository } from '../product/repository/new-product.repository';
 import { NewTransactionRepository } from '../transaction/repository/new-transaction.repository';
 import { NewProductImageRepository } from '../product/repository/new-product-image.repository';
@@ -31,17 +30,14 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
   constructor(
     private readonly user: UserRepository,
     private readonly store: StoreRepository,
-    private readonly order: OrderRepository,
+    private readonly customer: CustomerService,
     private readonly product: ProductRepository,
+    private readonly newStore: NewStoreRepository,
+    private readonly newProduct: NewProductRepository,
     private readonly transaction: TransactionRepository,
     private readonly storeVendor: StoreVendorRepository,
     private readonly productImage: ProductImageRepository,
-
     private readonly subscription: SubscriptionRepository,
-
-    private readonly newOrder: NewOrderRepository,
-    private readonly newStore: NewStoreRepository,
-    private readonly newProduct: NewProductRepository,
     private readonly newTransaction: NewTransactionRepository,
     private readonly newProductImage: NewProductImageRepository,
     private readonly newStoreVendor: NewStoreVendorRepository,
@@ -142,6 +138,7 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
             // Migrate old products with the new store ID
             for (const product of products) {
               const newProductPayload = {
+                _id: product._id,
                 storeId: new ObjectId(newStore._id),
                 categoryId: new ObjectId('663ccb06f34b6a4635712992'),
                 shortId: product.shortId,
@@ -202,6 +199,8 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
               await this.newTransaction.create(newTransactionPayload);
               console.log('Migrated transaction:', newTransactionPayload);
             }
+
+            await this.customer.migrate(String(newStore._id));
           }
         } catch (error) {
           console.log(error);

@@ -8,6 +8,9 @@ export type NewProductDocument = HydratedDocument<NewProduct>;
 @Schema({ collection: 'products', versionKey: false, timestamps: false })
 export class NewProduct implements INewProduct {
   @Prop({ type: SchemaTypes.ObjectId, required: true })
+  _id: ObjectId;
+
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
   storeId: any;
 
   @Prop({ type: SchemaTypes.ObjectId, required: true })

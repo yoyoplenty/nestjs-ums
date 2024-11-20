@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { IBaseSchema } from '../../../utils/types/schema.interface';
 
 export interface INewOrder {
@@ -5,8 +6,8 @@ export interface INewOrder {
   amount: number; // Required field
   transactionId?: string; // Optional field
   transactionRef?: string; // Optional field
-  customerId: string; // Required field
-  storeId: string; // Required field
+  storeCustomerId: ObjectId; // Required field
+  storeId: ObjectId; // Required field
   addressId: string; // Required field
   paymentMethod?: string; // Optional field
   products?: Record<string, string>; // Optional field

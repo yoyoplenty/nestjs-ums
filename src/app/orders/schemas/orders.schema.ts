@@ -18,10 +18,10 @@ export class Order implements IOrder {
   @Prop()
   transactionRef?: string; // Optional field
 
-  @Prop()
+  @Prop({ type: SchemaTypes.ObjectId, required: false })
   customerId: string; // Required field
 
-  @Prop()
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
   storeId: string; // Required field
 
   @Prop()
@@ -49,7 +49,7 @@ export class Order implements IOrder {
   receiptUrl?: string;
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
-  products?: Record<string, string>; // Optional field
+  products?: any; // Optional field
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;

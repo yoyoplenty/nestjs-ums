@@ -1,11 +1,15 @@
 import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IProduct } from '../types/product.interface';
+import { ObjectId } from 'mongodb';
 
 export type ProductDocument = HydratedDocument<Product>;
 
 @Schema({ collection: 'products', versionKey: false, timestamps: true })
 export class Product implements IProduct {
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  _id: ObjectId;
+
   @Prop({ type: SchemaTypes.ObjectId, required: true })
   storeId: any;
 

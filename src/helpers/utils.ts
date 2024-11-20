@@ -1,3 +1,5 @@
+import { listAllCustomers } from 'src/services/aws/cognito';
+
 export const isValidObjectId = (value: string): boolean => {
   const objectIdPattern = /^[0-9a-fA-F]{24}$/;
   return objectIdPattern.test(value);
@@ -74,4 +76,117 @@ export const meta = {
   activatedAt: new Date(),
   deactivatedAt: null,
   updatedAt: null,
+};
+
+export function convertCustomerToTokenObject(userObject: Record<string, any>): any {
+  const user: any = {
+    userId: userObject.id,
+    type: userObject['custom:type'],
+    email: userObject.email,
+    firstName: userObject.given_name,
+    lastName: userObject.family_name,
+    telephone: userObject.phone_number,
+    address: userObject.address,
+    bio: userObject.profile,
+    verified: userObject.email_verified,
+    verifiedAt: userObject.verifiedAt,
+    fbAccessToken: userObject['custom:fbToken'],
+    instagram: userObject['custom:instagram'],
+    whatsapp: userObject['custom:whatsapp'],
+    facebook: userObject['custom:facebook'],
+  };
+
+  return user;
+}
+
+export const buildCognitoFilter = (filter: Record<string, any> = {}): string => {
+  if (filter.email) return `email = "${filter.email}"`;
+  if (filter.firstName) return `given_name = "${filter.firstName}"`;
+  if (filter.lastName) return `family_name = "${filter.lastName}"`;
+  if (filter.search) return `email ^= "${filter.search}"`;
+  if (filter?.storeId) return `name = "${filter.storeId}"`;
+  if (filter?.activeStoreId) return `name = "${filter.activeStoreId}"`;
+  if (filter?.userId) return `sub = "${filter.userId}"`;
+
+  return '';
+};
+
+export const buildSearchFilter = (filter: Record<string, any> = {}): string[] => {
+  const filters: string[] = [];
+
+  if (filter.email) filters.push(`email = "${filter.email}"`);
+  if (filter.firstName) filters.push(`given_name = "${filter.firstName}"`);
+  if (filter.lastName) filters.push(`family_name = "${filter.lastName}"`);
+  if (filter?.storeId) filters.push(`name = "${filter.storeId}"`);
+  if (filter?.activeStoreId) filters.push(`name = "${filter.activeStoreId}"`);
+  if (filter?.userId) filters.push(`sub = "${filter.userId}"`);
+
+  if (filter.search) {
+    filters.push(`email ^= "${filter.search}"`);
+    filters.push(`given_name ^= "${filter.search}"`);
+    filters.push(`family_name ^= "${filter.search}"`);
+  }
+
+  return filters;
+};
+
+export const fetchAllCustomersWithPagination = async (filterKey?: string, filterValue?: string) => {
+  const allCustomers = [];
+  let paginationToken = '';
+  let lastToken = '';
+
+  do {
+    const { allUsersObject, nextToken } = await listAllCustomers({
+      filter: filterKey && filterValue ? buildCognitoFilter({ [filterKey]: filterValue }) : '',
+      limit: 60,
+      paginationToken,
+    });
+
+    allCustomers.push(...allUsersObject);
+    lastToken = nextToken;
+    paginationToken = nextToken;
+  } while (paginationToken);
+
+  return { allCustomers, lastToken };
+};
+
+export const getUniqueCustomers = (users: any[]) => {
+  return [...new Map(users.map((item) => [item.Username, item])).values()];
+};
+
+export const intersectResults = (arrays: any[][]) => {
+  if (arrays.length === 0) return [];
+
+  return arrays.reduce((acc, array) => {
+    return acc.filter((item) => array.some((other) => other.Username === item.Username));
+  });
+};
+
+export const filterAndIntersectCustomers = (
+  customersPerFilter: Record<string, any[]>,
+  filters: string[],
+  filter?: Record<string, any>,
+) => {
+  const isSearch = filters.some((f) => f.includes('^='));
+
+  console.log(isSearch);
+
+  let uniqueCustomers;
+
+  if (isSearch) {
+    uniqueCustomers = getUniqueCustomers(Object.values(customersPerFilter).flat());
+
+    if (filter?.storeId) {
+      uniqueCustomers = uniqueCustomers.filter(
+        (customer) => customer.Attributes.find((attr) => attr.Name === 'name')?.Value === filter.storeId,
+      );
+    }
+  } else {
+    uniqueCustomers =
+      filters.length > 0
+        ? intersectResults(Object.values(customersPerFilter))
+        : getUniqueCustomers(customersPerFilter.default);
+  }
+
+  return uniqueCustomers;
 };

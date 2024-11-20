@@ -1,55 +1,49 @@
 import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { INewOrder } from '../types/new-order.interface';
+import { ObjectId } from 'mongodb';
 
 export type NewOrderDocument = HydratedDocument<NewOrder>;
 
-@Schema({ collection: 'orders', versionKey: false, timestamps: true })
-export class NewOrder implements INewOrder {
-  @Prop()
-  orderNo: string; // Required field
+@Schema({ collection: 'orders', versionKey: false, timestamps: false })
+export class NewOrder {
+  @Prop({ type: String, required: true })
+  orderNo: string;
 
-  @Prop()
-  amount: number; // Required field
+  @Prop({ type: Number, required: true })
+  amount: number;
 
-  @Prop()
-  transactionId?: string; // Optional field
+  @Prop({ type: String, required: false })
+  salesChannels: string;
 
-  @Prop()
-  transactionRef?: string; // Optional field
+  @Prop({ type: String, enum: ['INCOMING', 'ACCEPTED', 'PROCESSED', 'COMPLETED'], required: true })
+  status: string;
 
-  @Prop()
-  customerId: string; // Required field
+  @Prop({ type: String, required: false, default: 'PAID' })
+  paymentStatus: string;
 
-  @Prop()
-  storeId: string; // Required field
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  storeId: ObjectId;
 
-  @Prop()
-  addressId: string; // Required field
+  @Prop({ type: SchemaTypes.ObjectId, required: true })
+  storeCustomerId: ObjectId;
 
-  @Prop()
-  paymentMethod?: string; // Optional field
+  @Prop({ type: SchemaTypes.Mixed, required: true })
+  products: any;
 
-  @Prop()
-  couponCode?: string; // Optional field
+  @Prop({ type: String, default: null })
+  note: string;
 
-  @Prop()
-  status: string; // Required field
+  @Prop({ type: Number, default: null })
+  amountPaid: number | null;
 
-  @Prop()
-  note?: string; // Optional field
+  @Prop({ type: String, default: null })
+  couponCode: string | null;
 
-  @Prop()
-  paid: boolean; // Required field
+  @Prop({ type: [String], default: [] })
+  discountIds: string[];
 
-  @Prop()
-  invoiceUrl?: string; // Optional field
-
-  @Prop()
-  receiptUrl?: string;
-
-  @Prop({ type: SchemaTypes.Mixed, required: false })
-  products?: Record<string, string>; // Optional field
+  @Prop({ type: Number, default: null })
+  shippingFee: number | null;
 
   @Prop({ type: SchemaTypes.Mixed, required: false })
   meta: Record<string, any>;

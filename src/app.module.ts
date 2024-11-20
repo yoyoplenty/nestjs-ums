@@ -16,6 +16,7 @@ import ProductModule from './app/product/product.module';
 import BankModule from './app/bank/bank.module';
 import PlanModule from './app/plan/plan.module';
 import SubscriptionModule from './app/subscription/subscription.module';
+import CustomerModule from './app/customers/customer.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import SubscriptionModule from './app/subscription/subscription.module';
     ProductModule,
     BankModule,
     PlanModule,
+    CustomerModule,
     SubscriptionModule,
   ],
   controllers: [AppController],
