@@ -17,6 +17,7 @@ import {
   convertUserToTokenObject,
   filterAndIntersectCustomers,
   filterUsers,
+  generateRandomPassword,
 } from '../../helpers/utils';
 import { config } from 'src/config';
 
@@ -265,7 +266,7 @@ export const createVendor = async ({ email, firstName, lastName }) => {
   const input = {
     UserPoolId: config.aws.userPoolId,
     Username: email,
-    TemporaryPassword: 'Password@123',
+    TemporaryPassword: generateRandomPassword(),
     UserAttributes: [
       { Name: 'email', Value: email },
       { Name: 'email_verified', Value: 'true' },
@@ -298,7 +299,6 @@ export const createVendor = async ({ email, firstName, lastName }) => {
 
 export const createCustomer = async ({
   email,
-  password = 'Password@123',
   firstName,
   lastName,
   telephone = '',
@@ -309,12 +309,12 @@ export const createCustomer = async ({
   const input = {
     UserPoolId: config.aws.customerPoolId,
     Username: email,
-    TemporaryPassword: password,
+    TemporaryPassword: generateRandomPassword(),
     UserAttributes: [
       { Name: 'email', Value: email },
       { Name: 'family_name', Value: lastName },
       { Name: 'given_name', Value: firstName },
-      // { Name: 'phone_number', Value: telephone },
+      { Name: 'phone_number', Value: telephone },
       { Name: 'custom:instagram', Value: instagram },
       { Name: 'custom:whatsapp', Value: whatsapp },
       { Name: 'custom:origin', Value: origin },

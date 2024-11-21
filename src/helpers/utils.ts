@@ -190,3 +190,32 @@ export const filterAndIntersectCustomers = (
 
   return uniqueCustomers;
 };
+
+export function generateRandomPassword(length: number = 10): string {
+  if (length < 4) throw new Error('Password length must be at least 4 to include all character types.');
+
+  const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const symbols = '!@#$%^&*()_+[]{}|;:,.<>?';
+  const allCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
+
+  const randomUpperCase = upperCaseLetters[Math.floor(Math.random() * upperCaseLetters.length)];
+  const randomLowerCase = lowerCaseLetters[Math.floor(Math.random() * lowerCaseLetters.length)];
+  const randomNumber = numbers[Math.floor(Math.random() * numbers.length)];
+  const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+
+  let password = randomUpperCase + randomLowerCase + randomNumber + randomSymbol;
+
+  for (let i = 4; i < length; i++) {
+    const randomCharacter = allCharacters[Math.floor(Math.random() * allCharacters.length)];
+    password += randomCharacter;
+  }
+
+  password = password
+    .split('')
+    .sort(() => 0.5 - Math.random())
+    .join('');
+
+  return password;
+}
