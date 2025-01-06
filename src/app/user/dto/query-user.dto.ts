@@ -2,28 +2,29 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ROLE } from './../../../enums/role.enum';
 import { IQueryUser } from '../types/user.interface';
 import { PaginationDto } from './../../../utils/dto/pagination.dto';
+
 export class QueryUserDto extends PaginationDto implements IQueryUser {
-  @ApiPropertyOptional({ example: '6532tyf632ytd23dy7' })
+  @ApiPropertyOptional({})
   _id?: string;
 
-  @ApiPropertyOptional({ example: 'plenty003' })
+  @ApiPropertyOptional({})
   userName?: string;
 
-  @ApiPropertyOptional({ example: 'jane' })
+  @ApiPropertyOptional({})
   firstName?: string;
 
-  @ApiPropertyOptional({ example: 'doe' })
+  @ApiPropertyOptional({})
   lastName?: string;
 
-  @ApiPropertyOptional({ example: 'mee' })
+  @ApiPropertyOptional({})
   middleName?: string;
 
-  @ApiPropertyOptional({ example: 'doe' })
+  @ApiPropertyOptional({})
   search?: string;
 
-  @ApiPropertyOptional({ example: 'admin@gmail.com' })
+  @ApiPropertyOptional({})
   email?: string;
 
-  @ApiPropertyOptional({ example: 'user' })
+  @ApiPropertyOptional({})
   role?: ROLE;
 }

@@ -314,7 +314,7 @@ export const createCustomer = async ({
       { Name: 'email', Value: email },
       { Name: 'family_name', Value: lastName },
       { Name: 'given_name', Value: firstName },
-      { Name: 'phone_number', Value: telephone },
+      // { Name: 'phone_number', Value: telephone },
       { Name: 'custom:instagram', Value: instagram },
       { Name: 'custom:whatsapp', Value: whatsapp },
       { Name: 'custom:origin', Value: origin },

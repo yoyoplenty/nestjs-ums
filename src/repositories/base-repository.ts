@@ -23,7 +23,8 @@ export class BaseRepository<T> implements IBaseRepository<T> {
   async paginate(query: IQueryPaginate<T> | any): Promise<T[]> {
     const { offset, limit, order, ...filter } = query;
 
-    return await this.repository.find(filter).skip(offset).limit(limit).sort({ createdAt: order });
+    // return await this.repository.find(filter).skip(offset).limit(limit).sort({ createdAt: order });
+    return await this.repository.find(filter).skip(offset).limit(limit).sort({ 'meta.createdAt': order });
   }
 
   async aggregate(query: Array<any>): Promise<T[]> {

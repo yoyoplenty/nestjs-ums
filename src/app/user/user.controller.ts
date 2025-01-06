@@ -28,9 +28,9 @@ export class UserController {
   }
 
   @Get('/export')
-  async export(@Res() res: Response) {
+  async export(@Query() query: QueryUserDto, @Res() res: Response) {
     try {
-      const response = await this.userService.export();
+      const response = await this.userService.export(query);
 
       return res.sendFile(`${response}`);
     } catch (error) {

@@ -2,12 +2,12 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IPaginate } from './../types/filter.interface';
 
 export class PaginationDto implements IPaginate {
-  @ApiPropertyOptional({ example: 2 })
+  @ApiPropertyOptional({})
   offset: number;
 
-  @ApiPropertyOptional({ example: 5 })
+  @ApiPropertyOptional({})
   limit: number;
 
-  @ApiPropertyOptional({ example: 1, type: 'integer' })
-  sortOrder: -1 | 1;
+  @ApiPropertyOptional({})
+  order: -1 | 1;
 }

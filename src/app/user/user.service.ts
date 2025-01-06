@@ -55,12 +55,15 @@ export class UserService extends BaseService<UserRepository, QueryUserDto, Creat
     return { data: users, message: `users successfully fetched` };
   }
 
-  async export(): Promise<any> {
-    const vendors = await this.user.find({});
+  async export(query: QueryUserDto): Promise<any> {
+    const searchFields = ['email', 'firstName', 'lastName'];
+    const filter = query.search ? regexSearchQuery(searchFields, query.search, query) : query;
+
+    const vendors = await this.user.paginate(filter);
 
     const data = vendors.map((vendor) => {
       return {
-        _id: vendor._id,
+        _id: String(vendor._id),
         firstName: vendor.firstName,
         lastName: vendor.lastName,
         email: vendor.email,
