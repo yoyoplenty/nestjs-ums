@@ -191,7 +191,7 @@ export const filterAndIntersectCustomers = (
   return uniqueCustomers;
 };
 
-export function generateRandomPassword(length: number = 10): string {
+export function generateRandomPassword(length = 10): string {
   if (length < 4) throw new Error('Password length must be at least 4 to include all character types.');
 
   const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

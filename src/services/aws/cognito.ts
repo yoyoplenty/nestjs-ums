@@ -17,9 +17,9 @@ import {
   convertUserToTokenObject,
   filterAndIntersectCustomers,
   filterUsers,
-  generateRandomPassword,
 } from '../../helpers/utils';
 import { config } from 'src/config';
+import { generateReadablePassword } from 'src/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwkToPem = require('jwk-to-pem');
@@ -266,7 +266,7 @@ export const createVendor = async ({ email, firstName, lastName }) => {
   const input = {
     UserPoolId: config.aws.userPoolId,
     Username: email,
-    TemporaryPassword: generateRandomPassword(),
+    TemporaryPassword: await generateReadablePassword(),
     UserAttributes: [
       { Name: 'email', Value: email },
       { Name: 'email_verified', Value: 'true' },
@@ -309,7 +309,7 @@ export const createCustomer = async ({
   const input = {
     UserPoolId: config.aws.customerPoolId,
     Username: email,
-    TemporaryPassword: generateRandomPassword(),
+    TemporaryPassword: await generateReadablePassword(),
     UserAttributes: [
       { Name: 'email', Value: email },
       { Name: 'family_name', Value: lastName },
