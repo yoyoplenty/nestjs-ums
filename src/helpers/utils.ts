@@ -169,8 +169,6 @@ export const filterAndIntersectCustomers = (
 ) => {
   const isSearch = filters.some((f) => f.includes('^='));
 
-  console.log(isSearch);
-
   let uniqueCustomers;
 
   if (isSearch) {

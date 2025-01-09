@@ -1,26 +1,26 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { faker } = require('@faker-js/faker');
 
-export async function generateReadablePassword(length = 10): Promise<string> {
-  if (length < 6) {
-    throw new Error('Password length must be at least 6 for a secure and readable format.');
+export async function generateReadablePassword(length = 12): Promise<string> {
+  if (length < 12) {
+    throw new Error('Password length must be at least 12 to accommodate the required format.');
   }
 
-  // Generate a random word and capitalize the first letter
   let randomWord = faker.word.noun();
   randomWord = randomWord.charAt(0).toUpperCase() + randomWord.slice(1);
 
   const symbols = '!@#$%^&*()_+[]{}|;:,.<>?';
   const numbers = '0123456789';
 
-  const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-  const randomNumbers = Array.from({ length: length - randomWord.length - 1 })
+  const randomSymbols = Array.from({ length: 2 })
+    .map(() => symbols[Math.floor(Math.random() * symbols.length)])
+    .join('');
+
+  const randomNumbers = Array.from({ length: 3 })
     .map(() => numbers[Math.floor(Math.random() * numbers.length)])
     .join('');
 
-  // Combine the components: Word + Symbol + Numbers
-  const password = `${randomWord}${randomSymbol}${randomNumbers}`;
-
-  console.log(password);
+  const password = `${randomWord}${randomSymbols}${randomNumbers}`;
 
   return password;
 }
